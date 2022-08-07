@@ -35,3 +35,9 @@ This will install dependencies in our virtual environment.
         pipenv install django
         pipenv install djangorestframework
         pipenv install django-cors-headers
+        
+3) Create django project
+
+        django-admin startproject kiosk
+        
+        

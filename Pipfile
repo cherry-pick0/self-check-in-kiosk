@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+# dev and prod packages
 django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
