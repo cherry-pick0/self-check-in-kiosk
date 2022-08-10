@@ -16,6 +16,8 @@ System packages and dependencies:
 - PostgreSQL (database server): 12.11 (Ubuntu 12.11-0ubuntu0.20.04.1); you will need Psycopg (adapter for Python)
 - pip (python package manager): 20.2.3 from /home/jerneja/.local/lib/python3.8/site-packages/pip (python 3.8)
 - pipenv (tool; Pipfile, pip, and virtualenv in one single command): version 2020.8.13
+- black: Python code formatter
+- make: automation tool for running commands
 
 
 ## Steps of creating this project
@@ -35,9 +37,17 @@ This will install dependencies in our virtual environment.
         pipenv install django
         pipenv install djangorestframework
         pipenv install django-cors-headers
+        # Development dependencies
+        pipenv install black --dev
         
 3) Create django project
 
         django-admin startproject kiosk
+        
+        
+   Note: check if django server is running
+        
+        cd kiosk
+        python manage.py runserver
         
         
