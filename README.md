@@ -26,7 +26,7 @@ System packages and dependencies:
 
 ## Steps of creating this project (notes)
 
-1. Activate the environment (this command creates or activates virtual environment)
+###1. Activate the environment (this command creates or activates virtual environment)
 
         pipenv shell
 
@@ -34,7 +34,7 @@ System packages and dependencies:
 
         (self-check-in-kiosk) jerneja@jerneja:~/GitHubProjects/self-check-in-kiosk$
 
-2. Install django and other dependencies
+###2. Install django and other dependencies
 
     This will install dependencies in our virtual environment.
 
@@ -42,34 +42,33 @@ System packages and dependencies:
         pipenv install django
         pipenv install djangorestframework
         pipenv install django-cors-headers
+        
         # Development dependencies
         pipenv install black --dev
         pipenv install pre-commit --dev
         pipenv install flake8 --dev
+        pipenv install isort --dev
         
 
 Notes on dev dependencies
 
 * [Black: Python code formatter](https://github.com/psf/black) & [Setup black for PyCharm](https://godatadriven.com/blog/partial-python-code-formatting-with-black-pycharm/)
-* [pre-commit](https://pre-commit.com/)
-* [Flake8](https://flake8.pycqa.org/en/latest/)
+* [pre-commit](https://pre-commit.com/): runned on commit
+* [Flake8](https://flake8.pycqa.org/en/latest/): helps prevent things like syntax errors, typos, bad formatting, incorrect styling, follows pep8 etc.
+* [isort](https://pypi.org/project/isort/): sorts imports
 
--------------------------------------------
 
-3. Create a django project
+###3. Create a django project
 
         django-admin startproject kiosk
 
    Note: check if django server is running
-
         cd kiosk
         python manage.py runserver
-
    or
-
         make runserver
 
-4. Add configuration files:
+###4. Add configuration files:
 
     - pre-commit: .pre-commit-config.yaml and run "pre-commit install"
     - black: pyproject.toml

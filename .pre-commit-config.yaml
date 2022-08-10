@@ -1,12 +1,15 @@
 repos:
-
--   repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.4.2
-    hooks:
-    -   id: isort
-
 -   repo: local
     hooks:
+    # Use isort from virtual environment
+    -   id: isort
+        name: isort
+        entry: isort
+        language: python
+        types: [python]
+        additional_dependencies: ['isort']
+        language_version: python3.9
+
     # Use black from virtual environment
     -   id: black
         name: black

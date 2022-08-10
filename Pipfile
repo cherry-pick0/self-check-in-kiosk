@@ -8,6 +8,7 @@ verify_ssl = true
 black = "*"
 pre-commit = "*"
 flake8 = "*"
+isort = "*"
 
 [packages]
 # dev and prod packages
