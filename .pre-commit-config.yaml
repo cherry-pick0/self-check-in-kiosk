@@ -1,0 +1,26 @@
+repos:
+
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.4.2
+    hooks:
+    -   id: isort
+
+-   repo: local
+    hooks:
+    # Use black from virtual environment
+    -   id: black
+        name: black
+        entry: black
+        language: python
+        types: [python]
+        additional_dependencies: ['black']
+        language_version: python3.9
+
+    # Use flake8 from virtual environment
+    - id: flake8
+      name: flake8
+      entry: flake8
+      language: python
+      types: [python]
+      additional_dependencies: ['flake8']
+      language_version: python3.9
