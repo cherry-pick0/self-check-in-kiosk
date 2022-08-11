@@ -1,7 +1,11 @@
 repos:
+# Hooks are executed in given order
+
+    # Use tools from virtual environment
 -   repo: local
     hooks:
-    # Use isort from virtual environment
+
+    # Sort imports
     -   id: isort
         name: isort
         entry: isort
@@ -10,7 +14,7 @@ repos:
         additional_dependencies: ['isort']
         language_version: python3.9
 
-    # Use black from virtual environment
+    # Code Formatter, PEP8
     -   id: black
         name: black
         entry: black
@@ -19,7 +23,8 @@ repos:
         additional_dependencies: ['black']
         language_version: python3.9
 
-    # Use flake8 from virtual environment
+    # Check the style and quality of some
+    # python code (pep8, pyflakes, third party plugins etc.)
     - id: flake8
       name: flake8
       entry: flake8
