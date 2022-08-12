@@ -127,3 +127,4 @@ on Ubuntu, Debian, Alpine, even Windows Server Core.
 Note: for some reason I need to run this before
 
     sudo chmod 777 /var/run/docker.sock
+# TODO finish dockerization

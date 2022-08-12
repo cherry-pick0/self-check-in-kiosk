@@ -43,10 +43,15 @@ ENV PYTHONUNBUFFERED 1
 #RUN pip install --upgrade pip
 
 # Copy whole project to your docker home directory.
-COPY . $DockerHOME
-# run this command to install all dependencies
-#RUN pip install -r requirements.txt
-RUN pip install pipenv
+# COPY . $DockerHOME
+
+# ??
+COPY Pipfile .
+COPY Pipfile.lock .
+
+# Run this command to install all dependencies
+RUN apt update
+RUN apt-get -y install pipenv
 RUN pipenv install
 # port where the Django app runs
 EXPOSE 8000
