@@ -128,3 +128,13 @@ Note: for some reason I need to run this before
 
     sudo chmod 777 /var/run/docker.sock
 # TODO finish dockerization
+
+
+**7. User auth**
+
+- source: [docs](https://docs.djangoproject.com/en/4.1/topics/auth/customizing/)
+
+We will have a custom User model. Create users module/django app:
+        
+        cd apps
+        python ../manage.py startapp users
