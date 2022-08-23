@@ -80,3 +80,6 @@ Install:
 
         pipenv shell
         pipenv install
+        
+### Naming
+ TODO
