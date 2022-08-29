@@ -73,6 +73,9 @@ Black:
         CREATE USER kiosk WITH ENCRYPTED PASSWORD 'kiosk';
         GRANT ALL PRIVILEGES ON DATABASE kioskdb to kiosk;
         
+        # For testing purposes - add permission to create db
+        ALTER USER kiosk CREATEDB;
+        
         # Connect to our new local db
         \c self-check-in-kiosk-db
 
@@ -127,7 +130,7 @@ on Ubuntu, Debian, Alpine, even Windows Server Core.
 Note: for some reason I need to run this before
 
     sudo chmod 777 /var/run/docker.sock
-# TODO finish dockerization
+TODO finish dockerization
 
 
 **7. User auth**
@@ -138,3 +141,19 @@ We will have a custom User model. Create users module/django app:
         
         cd apps
         python ../manage.py startapp users
+
+
+**8. Pycharm settings**
+
+- Open django project at (where manage.py is):
+
+        self-check-in-kiosk/kiosk
+   
+- Enable and add django settings in Pycharm: [hint](https://drive.google.com/file/d/1tGmYeOPrWT4yqgyszEUNf6BTfbNrzJGT/view?usp=sharing)
+
+
+**9. Add environment variables to your system**
+        
+- on Ubuntu, go to .bashrc file and add:
+        
+        export DJANGO_SETTINGS_MODULE="kiosk.settings"

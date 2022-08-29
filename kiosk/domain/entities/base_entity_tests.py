@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from kiosk.domain.entities.base_entity import BaseEntity
+from domain.entities.base_entity import BaseEntity
 
 
 class BaseEntityTests(TestCase):
