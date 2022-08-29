@@ -13,9 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from api.token_auth import CustomAuthToken
+from api.v1.kiosk_managers import KioskManagersViewSet
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r"v1/kiosk-managers", KioskManagersViewSet, basename="kiosk-managers")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("api/token-auth/", CustomAuthToken.as_view()),
+    path("api/", include(router.urls)),
 ]

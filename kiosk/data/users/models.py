@@ -1,5 +1,10 @@
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import UserManager
 from django.db import models
+
+
+class KioskUserManager(UserManager):
+    pass
 
 
 class KioskUser(AbstractBaseUser):
@@ -12,3 +17,5 @@ class KioskUser(AbstractBaseUser):
 
     # Auth with email
     USERNAME_FIELD = "email"
+
+    objects = KioskUserManager()

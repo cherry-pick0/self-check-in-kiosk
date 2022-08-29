@@ -27,21 +27,26 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+API_URL = "http://0.0.0.0:8000"
+
 
 # Application definition
 
 INSTALLED_APPS = [
     "kiosk",
     "data.users",
+    "data.managers",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework.authtoken",
 ]
 
 AUTH_USER_MODEL = "users.KioskUser"
+AUTHENTICATION_BACKENDS = ["api.email_backend.EmailBackend"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
