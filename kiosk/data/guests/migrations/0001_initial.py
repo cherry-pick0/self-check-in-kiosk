@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="KioskManager",
+            name="KioskGuest",
             fields=[
                 (
                     "id",
@@ -26,12 +26,14 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
+                ("unique_identifier", models.CharField(max_length=256, unique=True)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "kiosk_user",
                     models.OneToOneField(
-                        on_delete=django.db.models.deletion.CASCADE,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from kiosk.domain.value_objects.email_address import EmailAddress, EmailInvalidException
+from domain.value_objects.email_address import EmailAddress, EmailInvalidException
 
 
 class EmailAddressTests(TestCase):

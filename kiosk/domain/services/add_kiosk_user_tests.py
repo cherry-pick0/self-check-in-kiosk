@@ -1,40 +1,38 @@
 from unittest import TestCase
 
-from kiosk.domain.entities.kiosk_user import KioskUser
-from kiosk.domain.services.add_kiosk_user import (
-    AddKioskUserIParams,
+from domain.entities.kiosk_user import KioskUser
+from domain.services.add_kiosk_user import (
+    AddKioskUserParams,
     AddKioskUserUsersIRepository,
     ServiceAddKioskUser,
 )
-from kiosk.domain.value_objects.email_address import EmailAddress
 
 
 class AddKioskUserTestsUsersRepository(AddKioskUserUsersIRepository):
-    def add(self, kiosk_user: KioskUser) -> KioskUser:
+    __kiosk_user = None
+
+    def add(self, kiosk_user: KioskUser):
+        self.__kiosk_user = kiosk_user
         return kiosk_user
 
-
-class AddKioskUserTestsParams(AddKioskUserIParams):
-    _kiosk_user: KioskUser = None
-
-    @property
-    def kiosk_user(self) -> KioskUser:
-        return self._kiosk_user
+    def get_by_id(self, kiosk_user_id: int) -> KioskUser:
+        return self.__kiosk_user
 
 
 class ServiceAddKioskUserTests(TestCase):
     def test_add_kiosk_user(self):
         # Add a new KioskUser
         email = "test@kiosk.com"
-        name = "Test"
-        params = AddKioskUserTestsParams()
-        params._kiosk_user = KioskUser(0, EmailAddress(email), name)
-        users = AddKioskUserTestsUsersRepository()
+        first_name = "Test"
+        data = {"email": email, "first_name": first_name}
+        params = AddKioskUserParams(data)
+        kiosk_users = AddKioskUserTestsUsersRepository()
 
         service = ServiceAddKioskUser()
-        service.users = users
+        service.kiosk_users = kiosk_users
         service.execute(params)
 
         # Email address and name are the one chosen on creation
         self.assertEqual(service.kiosk_user.email_address.email, email)
-        self.assertEqual(service.kiosk_user.name, name)
+        self.assertEqual(service.kiosk_user.first_name, first_name)
+        self.assertEqual(service.kiosk_user.last_name, None)

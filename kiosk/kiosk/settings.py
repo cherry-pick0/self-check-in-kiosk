@@ -34,14 +34,18 @@ API_URL = "http://0.0.0.0:8000"
 
 INSTALLED_APPS = [
     "kiosk",
-    "data.users",
+    "data.guests",
     "data.managers",
+    "data.users",
     "django.contrib.admin",
+    # Core authentication framework and its default models.
     "django.contrib.auth",
+    # Django content type system (allows permissions to be associated with models).
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
     "rest_framework.authtoken",
 ]
 
@@ -50,13 +54,22 @@ AUTHENTICATION_BACKENDS = ["api.email_backend.EmailBackend"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Manages sessions across requests
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    # Associates users with requests using sessions.
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAdminUser",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+}
 
 ROOT_URLCONF = "kiosk.urls"
 
@@ -137,3 +150,4 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+APPEND_SLASH = False

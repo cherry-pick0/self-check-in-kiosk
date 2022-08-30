@@ -15,7 +15,7 @@ class BaseEntity:
 
     @entity_id.setter
     def entity_id(self, value: int):
-        if not isinstance(value, int):
+        if value and not isinstance(value, int):
             raise TypeError
 
         self._entity_id = value

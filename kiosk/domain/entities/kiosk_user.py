@@ -1,15 +1,23 @@
-from kiosk.domain.entities.base_entity import BaseEntity
-from kiosk.domain.value_objects.email_address import EmailAddress
+from domain.entities.base_entity import BaseEntity
+from domain.value_objects.email_address import EmailAddress
 
 
 class KioskUser(BaseEntity):
     _email_address: EmailAddress
-    _name: str
+    _first_name: str
+    _last_name: str
 
-    def __init__(self, entity_id_value, email_address_value, name_value):
+    def __init__(
+        self,
+        email_address_value,
+        first_name_value=None,
+        last_name_value=None,
+        entity_id_value=None,
+    ):
         super().__init__(entity_id_value)
         self.email_address = email_address_value
-        self.name = name_value
+        self.first_name = first_name_value
+        self.last_name = last_name_value
 
     @property
     def email_address(self):
@@ -23,9 +31,21 @@ class KioskUser(BaseEntity):
         self._email_address = value
 
     @property
-    def name(self):
-        return self._name
+    def first_name(self):
+        return self._first_name
 
-    @name.setter
-    def name(self, value: str):
-        self._name = value
+    @first_name.setter
+    def first_name(self, value: str):
+        self._first_name = value
+
+    @property
+    def last_name(self):
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, value: str):
+        self._last_name = value
+
+    @property
+    def name(self):
+        return f"{self._first_name} {self._last_name}"
