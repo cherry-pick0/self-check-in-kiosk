@@ -1,8 +1,8 @@
 from rest_framework.test import APITransactionTestCase
 
 
-class GuestRegistrationsTests(APITransactionTestCase):
-    def test_guest_registration(self):
+class KioskRegistrationsTests(APITransactionTestCase):
+    def test_kiosk_registration(self):
         pass
         # Create Kiosk Manager
         # Create Kiosk as a Kiosk Manager
@@ -19,7 +19,7 @@ class GuestRegistrationsTests(APITransactionTestCase):
         # As an Unregistered User I can login to the platform,
         # in order to see the Kiosk Manager platform.
 
-    def test_guest_registration_no_user_account(self):
+    def test_kiosk_registration_no_user_account(self):
         pass
         # Unauthenticated user is trying to register as a guest.
         # Similar as above.

@@ -34,8 +34,10 @@ API_URL = "http://0.0.0.0:8000"
 
 INSTALLED_APPS = [
     "kiosk",
-    "data.guests",
+    "data.forms",
+    "data.kiosks",
     "data.managers",
+    "data.registrations",
     "data.users",
     "django.contrib.admin",
     # Core authentication framework and its default models.
