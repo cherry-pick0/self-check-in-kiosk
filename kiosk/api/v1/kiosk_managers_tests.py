@@ -14,9 +14,9 @@ class KioskManagersTests(APITransactionTestCase):
         self.scenario.login(self.scenario.admin_token)
 
         # Admin creates a kiosk manager
-        manager_data = {}
+        manager_data = {"kiosk_user": self.scenario.kiosk_user_id}
         response = self.client.post(
             "/api/v1/kiosk-managers", manager_data, format="json"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual({}, response.data)
+        self.assertEqual(manager_data, response.data)

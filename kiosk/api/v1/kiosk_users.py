@@ -21,6 +21,7 @@ class KioskUsersPermissions(permissions.IsAuthenticated, permissions.BasePermiss
 
 
 class KioskUsersSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     email = serializers.EmailField(required=True)
     first_name = serializers.CharField(required=False, allow_blank=True)
     last_name = serializers.CharField(required=False, allow_blank=True)
@@ -28,6 +29,7 @@ class KioskUsersSerializer(serializers.Serializer):
     class Meta:
         model = KioskUser
         fields = (
+            "id",
             "email",
             "first_name",
             "last_name",

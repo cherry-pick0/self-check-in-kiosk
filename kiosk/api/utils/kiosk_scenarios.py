@@ -11,6 +11,7 @@ Create scenarios for api tests.
 
 class KioskScenario:
     admin_user: KioskUser = None
+    kiosk_user_id: int = None
     admin_token = None
     _test_case = None
 
@@ -64,6 +65,7 @@ class KioskScenario:
             format="json",
         )
         self._test_case.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.kiosk_user_id = response.data.pop("id")
         self._test_case.assertEqual(kiosk_user_data, response.data)
         self.logout()
 

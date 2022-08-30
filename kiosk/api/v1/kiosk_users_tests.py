@@ -24,4 +24,5 @@ class KioskUsersTests(APITransactionTestCase):
             format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        kiosk_user_data["id"] = response.data.get("id")
         self.assertEqual(kiosk_user_data, response.data)
