@@ -13,8 +13,9 @@ class KioskUsersTests(APITransactionTestCase):
         self.scenario.login(self.scenario.admin_token)
 
         # Admin creates a kiosk user
+        email = "user@kiosk.com"
         kiosk_user_data = {
-            "email": "user@kiosk.com",
+            "email": email,
             "first_name": "",
             "last_name": "",
         }
@@ -26,3 +27,8 @@ class KioskUsersTests(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         kiosk_user_data["id"] = response.data.get("id")
         self.assertEqual(kiosk_user_data, response.data)
+
+        # We don't have api for emails, so check directly in db
+        from data.emails.models import DataModelEmail
+
+        self.assertEqual(DataModelEmail.objects.filter(receiver_email=email).count(), 1)

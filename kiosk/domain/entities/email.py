@@ -15,7 +15,7 @@ class Email(BaseEntity):
         name,
         subject,
         body,
-        status,
+        status=None,
         entity_id_value=None,
     ):
         super().__init__(entity_id_value)
