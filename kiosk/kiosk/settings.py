@@ -34,6 +34,7 @@ API_URL = "http://0.0.0.0:8000"
 
 INSTALLED_APPS = [
     "kiosk",
+    "data.emails",
     "data.forms",
     "data.kiosks",
     "data.managers",

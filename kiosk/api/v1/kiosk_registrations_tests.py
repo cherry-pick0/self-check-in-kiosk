@@ -1,9 +1,14 @@
+from api.utils.kiosk_scenarios import KioskScenario
 from rest_framework.test import APITransactionTestCase
 
 
 class KioskRegistrationsTests(APITransactionTestCase):
+    def setUp(self) -> None:
+        self.scenario = KioskScenario(self)
+        self.scenario = self.scenario.add_admin()
+
     def test_kiosk_registration(self):
-        pass
+        self.scenario = self.scenario.add_kiosk_user()
         # Create Kiosk Manager
         # Create Kiosk as a Kiosk Manager
         # Add questions to the Kiosk Form
@@ -19,7 +24,7 @@ class KioskRegistrationsTests(APITransactionTestCase):
         # As an Unregistered User I can login to the platform,
         # in order to see the Kiosk Manager platform.
 
-    def test_kiosk_registration_no_user_account(self):
+    def test_kiosk_registration_no_auth(self):
         pass
         # Unauthenticated user is trying to register as a guest.
         # Similar as above.
