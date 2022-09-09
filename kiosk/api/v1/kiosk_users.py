@@ -1,5 +1,4 @@
 from data.users.models import KioskUser
-from domain.services.add_email import AddEmailParams, ServiceAddEmail
 from domain.services.add_kiosk_user import AddKioskUserParams, ServiceAddKioskUser
 from domain.services.factory import ServiceFactory
 from rest_framework import permissions, serializers, viewsets
@@ -44,20 +43,6 @@ class KioskUsersSerializer(serializers.Serializer):
         service = ServiceFactory().build(ServiceAddKioskUser)
         params = AddKioskUserParams(validated_data)
         service.execute(params)
-        added_kiosk_user = service.kiosk_user
-
-        # todo Domain events
-        # todo Registration email
-        add_email_service = ServiceFactory().build(ServiceAddEmail)
-        email_data = {
-            "email": added_kiosk_user.email,
-            "name": added_kiosk_user.first_name,
-            "subject": "",
-            "body": "",
-        }
-        email_params = AddEmailParams(email_data)
-        add_email_service.execute(email_params)
-
         return service.kiosk_user
 
 

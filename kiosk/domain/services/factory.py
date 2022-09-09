@@ -24,4 +24,12 @@ class ServiceFactory:
 
     def build(self, service_class_key):
         service_class = self.services.get(service_class_key)
-        return service_class()
+        service = service_class()
+
+        # Put event handler logic here
+        # todo find better solution
+        from domain.domain_events.factory import DomainEventsFactory
+
+        service.domain_events_factory = DomainEventsFactory()
+
+        return service
