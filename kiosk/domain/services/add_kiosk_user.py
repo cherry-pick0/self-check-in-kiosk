@@ -1,5 +1,7 @@
 import abc
 
+from domain.domain_events.events import KioskUserAdded
+from domain.domain_events.handlers import Factory as DomainEventsFactory
 from domain.entities.kiosk_user import KioskUser
 from domain.value_objects.email_address import EmailAddress
 
@@ -36,6 +38,7 @@ class AddKioskUserParams:
 class ServiceAddKioskUser:
     __kiosk_user = None
     kiosk_users: AddKioskUserUsersIRepository = None
+    domain_events_factory: DomainEventsFactory = None
 
     def execute(self, params: AddKioskUserParams):
         kiosk_user_entity = KioskUser(
@@ -44,6 +47,14 @@ class ServiceAddKioskUser:
             last_name_value=params.last_name,
         )
         self.__kiosk_user = self.kiosk_users.add(kiosk_user_entity)
+
+        # May touch application logic
+        # Workaround for unit tests
+        # TODO: find better solution
+        if self.domain_events_factory:
+            self.domain_events_factory.raise_domain_events(
+                KioskUserAdded, kiosk_user=kiosk_user_entity
+            )
 
     @property
     def kiosk_user(self):

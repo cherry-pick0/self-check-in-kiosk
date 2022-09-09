@@ -1,4 +1,5 @@
 from data.users.models import KioskUser
+from domain.domain_events.handlers import Factory as DomainEventsFactory
 from domain.services.add_email import AddEmailParams, ServiceAddEmail
 from domain.services.add_kiosk_user import AddKioskUserParams, ServiceAddKioskUser
 from repositories.emails import EmailsRepositoryORM
@@ -44,6 +45,7 @@ class KioskUsersSerializer(serializers.Serializer):
         # Add a new user
         service = ServiceAddKioskUser()
         service.kiosk_users = KioskUsersRepositoryORM()
+        service.domain_events_factory = DomainEventsFactory()
         params = AddKioskUserParams(validated_data)
         service.execute(params)
         added_kiosk_user = service.kiosk_user
