@@ -83,32 +83,32 @@ Black:
     
 <sub>6.1 Installing Docker([source](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)) </sub>
 
-    # First, update your existing list of packages
-    sudo apt update
+        # First, update your existing list of packages
+        sudo apt update
+        
+        # Next, install a few prerequisite packages which let apt use packages over HTTPS:
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common
+        
+        # Then add the GPG key for the official Docker repository to your system:
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        
+        # Add the Docker repository to APT sources:
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
     
-    # Next, install a few prerequisite packages which let apt use packages over HTTPS:
-    sudo apt install apt-transport-https ca-certificates curl software-properties-common
-    
-    # Then add the GPG key for the official Docker repository to your system:
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    
-    # Add the Docker repository to APT sources:
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-
-    # Make sure you are about to install from the Docker repo instead of the default Ubuntu repo
-    apt-cache policy docker-ce
-    
-    # Finally, install Docker
-    sudo apt install docker-ce
-    
-    # Check that it’s running
-    sudo systemctl status docker
-    
+        # Make sure you are about to install from the Docker repo instead of the default Ubuntu repo
+        apt-cache policy docker-ce
+        
+        # Finally, install Docker
+        sudo apt install docker-ce
+        
+        # Check that it’s running
+        sudo systemctl status docker
+        
 
 <sub>6.2 Installing Docker Compose</sub>
-    
-    # Install Docker Compose
-    sudo apt-get install docker-compose-plugin
+        
+        # Install Docker Compose
+        sudo apt-get install docker-compose-plugin
 
 <sub>About docker and virtual env ([source](https://stackoverflow.com/questions/66407993/which-is-better-virtual-env-or-docker)) </sub>
 
@@ -124,12 +124,12 @@ on Ubuntu, Debian, Alpine, even Windows Server Core.
 
 
 <sub>6.4 Build docker image </sub>
-
-    docker build . -t docker-django-v0.0
+    
+        docker build . -t docker-django-v0.0
 
 Note: for some reason I need to run this before
-
-    sudo chmod 777 /var/run/docker.sock
+    
+        sudo chmod 777 /var/run/docker.sock
 TODO finish dockerization
 
 
@@ -155,5 +155,6 @@ We will have a custom User model. Create users module/django app:
 **9. Add environment variables to your system**
         
 - on Ubuntu, go to .bashrc file and add:
-        
-        export DJANGO_SETTINGS_MODULE="kiosk.settings"
+         
+         
+         export DJANGO_SETTINGS_MODULE="kiosk.settings"
