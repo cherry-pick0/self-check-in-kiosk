@@ -156,5 +156,44 @@ We will have a custom User model. Create users module/django app:
         
 - on Ubuntu, go to .bashrc file and add:
          
-         
          export DJANGO_SETTINGS_MODULE="kiosk.settings"
+
+
+**10. AWS account**
+
+- Create AWS account
+- Note: lambda??
+
+    **10.1 Setup EC2 machine**
+    
+    Find 'launch ec2 instance section' and follow instructions. Here is my config:
+    
+    - Create t2.micro (free tier) ec2 instance, running Ubuntu.
+    - You will need to create key-pair (rsa, .pem),
+    with which you'll connect to the server. Check [this example](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html).
+    
+    After setup, you can connect via ssh:
+    
+        ssh ubuntu@instance-ip-address -i .ssh/kiosk-api-key.pem
+    
+    **10.2 Setup RDS**
+    
+    Go to RDS section and find 'Create database' section.
+    
+    - PostgreSQL engine
+    - Size: db.t3.micro
+    - Template: Free tier
+    - Database auth: Password and IAM database authentication
+    - Make sure to save username and password!
+    - Make it publicly accessible, so you can access it separately later
+    - Edit security group inbound rules, to make postgresql accessible
+    
+    You can connect to the database:
+    
+        psql -h kioskdb.XYZ.us-east-1.rds.amazonaws.com -p 5432 -d kioskdb -U kiosk
+
+    **10.3 Setup Deployment process**
+
+    **10.4 Setup Email service**
+
+    **10.5 Setup S3 bucket**
