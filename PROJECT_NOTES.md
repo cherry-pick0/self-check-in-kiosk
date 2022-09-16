@@ -156,7 +156,7 @@ We will have a custom User model. Create users module/django app:
         
 - on Ubuntu, go to .bashrc file and add:
          
-         export DJANGO_SETTINGS_MODULE="kiosk.settings"
+         export DJANGO_SETTINGS_MODULE="kiosk.settings.dev"
 
 
 **10. AWS account**
