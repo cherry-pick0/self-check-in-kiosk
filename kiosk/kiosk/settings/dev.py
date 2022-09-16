@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
 from .base import *
 
 # Load environment dev variables
@@ -38,8 +37,9 @@ DATABASES = {
         "NAME": "kioskdb",
         "USER": "kiosk",
         "PASSWORD": "kiosk",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        # "HOST": "127.0.0.1",
+        "HOST": os.getenv("DB_HOST", "localhost"),
+        "PORT": os.getenv("DB_PORT", "5432"),
         "TEST": {
             "NAME": "test_kioskdb",
         },
