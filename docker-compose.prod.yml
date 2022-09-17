@@ -6,16 +6,16 @@ services:
   web:
     build:
       context: ""
-      dockerfile: Dockerfile
+      dockerfile: prod.Dockerfile
     # use Django's built-in server in development
     # command: python manage.py runserver 0.0.0.0:8000
-    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn kiosk.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./kiosk/:/usr/src/app/
     ports:
       - 8000:8000
     environment:
-      - DB_HOST=db
+      - DB_HOST=kioskdb.c8dcrg3cpdq9.us-east-1.rds.amazonaws.com
       - DB_PORT=5432
     #env_file:
     #  - kiosk/kiosk/settings/.env.prod
@@ -28,9 +28,9 @@ services:
       - '5432:5432'
     environment:
       - POSTGRES_USER=kiosk
-      - POSTGRES_PASSWORD=kiosk
+      - POSTGRES_PASSWORD=[secret]
       - POSTGRES_DB=kioskdb
-      - DB_HOST=db
+      - DB_HOST=kioskdb.c8dcrg3cpdq9.us-east-1.rds.amazonaws.com
     depends_on:
       - web
 

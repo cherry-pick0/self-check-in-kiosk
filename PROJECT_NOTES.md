@@ -137,9 +137,7 @@ on Ubuntu, Debian, Alpine, even Windows Server Core.
 Note - you might need to run this before:
     
         sudo chmod 777 /var/run/docker.sock
-        
-TODO finish dockerization
-        
+
         # You might need to stop postgres on your machine,
         # in order to run docker-compose, since db-container
         # will use the same port 5432
@@ -147,10 +145,10 @@ TODO finish dockerization
         
         # Build and run containers
         # Use -d to run containers in the background
-        docker-compose up -d --build
+        docker-compose -f docker-compose.dev.yml up -d --build
         
         # Run migrations in container
-        docker-compose exec web python manage.py migrate --noinput
+        docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
 
 
 **7. User auth**

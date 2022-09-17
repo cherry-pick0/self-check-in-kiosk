@@ -18,14 +18,12 @@ ENV PYTHONUNBUFFERED 1
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev
 
-# install dependencies
-#RUN apt update
-#RUN apt-get -y install pipenv
-#RUN pipenv install
-# WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager.
+# todo lint
 #RUN pip install --upgrade pip
-#RUN pip install pipenv
-#RUN pipenv install
+#RUN pip install flake8==3.9.2
+#COPY . .
+#RUN flake8 --ignore=E501,F401 .
+
 
 RUN pip install pipenv
 COPY Pipfile /tmp
@@ -33,10 +31,17 @@ COPY Pipfile.lock /tmp
 RUN cd /tmp && pipenv requirements > requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
+# copy entrypoint.sh
+COPY ./entrypoint.dev.sh .
+RUN sed -i 's/\r$//g' /home/jerneja/GitHubProjects/self-check-in-kiosk/entrypoint.dev.sh
+RUN chmod +x /home/jerneja/GitHubProjects/self-check-in-kiosk/entrypoint.dev.sh
+
 # copy project
 COPY kiosk .
 
 
+# run entrypoint.sh
+ENTRYPOINT ["/home/jerneja/GitHubProjects/self-check-in-kiosk/entrypoint.dev.sh"]
 
 
 # ------------------------------------

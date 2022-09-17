@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: ""
-      dockerfile: Dockerfile
+      dockerfile: dev.Dockerfile
     command: python manage.py runserver 0.0.0.0:8001
     volumes:
       - ./kiosk/:/usr/src/app/
@@ -54,7 +54,7 @@ volumes:
 #  web:
 #    build:
 #      context: ./kiosk
-#      dockerfile: Dockerfile.prod
+#      dockerfile: prod.Dockerfile
 #    image: 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:web
 #    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
 #    volumes:
