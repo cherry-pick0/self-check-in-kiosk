@@ -63,6 +63,10 @@ Black:
     
 **5. Setup db**
 
+Note: docker-compose will create its own db-container,
+but using postgresql on our machine will make it easier
+for our development process.
+
         # Create local db
         sudo -u postgres createdb kioskdb
             
@@ -77,9 +81,12 @@ Black:
         ALTER USER kiosk CREATEDB;
         
         # Connect to our new local db
-        \c self-check-in-kiosk-db
+        \c kioskdb
 
 **6. Docker**
+
+Note: for development process, dockerization isn't necessary.
+But we are setting this up for staging and production servers.
     
 <sub>6.1 Installing Docker([source](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)) </sub>
 
@@ -123,18 +130,27 @@ on Ubuntu, Debian, Alpine, even Windows Server Core.
 <sub>6.3 Add Dockerfile to project</sub>
 
 
-<sub>6.4 Build docker image </sub>
+<sub>6.4 Build docker image ??</sub>
     
         docker build . -t docker-django-v0.0
 
-Note: for some reason I need to run this before
+Note - you might need to run this before:
     
         sudo chmod 777 /var/run/docker.sock
         
 TODO finish dockerization
-
+        
+        # You might need to stop postgres on your machine,
+        # in order to run docker-compose, since db-container
+        # will use the same port 5432
         sudo service postgresql stop
-        docker-compose up --build
+        
+        # Build and run containers
+        # Use -d to run containers in the background
+        docker-compose up -d --build
+        
+        # Run migrations in container
+        docker-compose exec web python manage.py migrate --noinput
 
 
 **7. User auth**
