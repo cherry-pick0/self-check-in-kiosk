@@ -15,7 +15,7 @@ services:
     ports:
       - 8000:8000
     environment:
-      - DB_HOST=kioskdb.c8dcrg3cpdq9.us-east-1.rds.amazonaws.com
+      - DB_HOST=[]
       - DB_PORT=5432
     #env_file:
     #  - kiosk/kiosk/settings/.env.prod
@@ -30,7 +30,7 @@ services:
       - POSTGRES_USER=kiosk
       - POSTGRES_PASSWORD=[secret]
       - POSTGRES_DB=kioskdb
-      - DB_HOST=kioskdb.c8dcrg3cpdq9.us-east-1.rds.amazonaws.com
+      - DB_HOST=[]
     depends_on:
       - web
 
