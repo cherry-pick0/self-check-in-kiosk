@@ -77,7 +77,8 @@ Install:
         sudo snap install pre-commit --classic
 
 ##Setup the project (follow steps)
-
+        
+        cd kiosk
         pipenv shell
         pipenv install
         

@@ -5,15 +5,22 @@ version: '3.7'
 services:
   web:
     build:
-      context: ""
+      # Note: context is supposed to be 'kiosk',
+      # but since Pipfile exists outside of 'kiosk' dir,
+      # we need to use parent directory.
+      context: kiosk
       dockerfile: prod.Dockerfile
     # use Django's built-in server in development
     # command: python manage.py runserver 0.0.0.0:8000
     command: gunicorn kiosk.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./kiosk/:/usr/src/app/
-    ports:
-      - 8000:8000
+    # expose: Now, port 8000 is only exposed internally, to other Docker services.
+    # The port will no longer be published to the host machine.
+    expose:
+      - 8000
+#    ports:
+#      - 8000:8000
     environment:
       - DB_HOST=[]
       - DB_PORT=5432
@@ -31,6 +38,13 @@ services:
       - POSTGRES_PASSWORD=[secret]
       - POSTGRES_DB=kioskdb
       - DB_HOST=[]
+    depends_on:
+      - web
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
     depends_on:
       - web
 

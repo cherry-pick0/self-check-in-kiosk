@@ -1,8 +1,7 @@
+#!/bin/sh
 # Source: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
-
 # Verify that Postgres is healthy before applying the migrations...
 
-#!/bin/sh
 
 if [ "$DATABASE" = "postgres" ]
 then

@@ -4,13 +4,19 @@
 # BUILDER #
 ###########
 
-# pull official base image
+# Base image
+## This installs a Python image into the Docker image.
+## This is also the version of Python that will run the application in the container
 FROM python:3.9.6-alpine as builder
 
-# set work directory
-WORKDIR /usr/src/app
+# Set work directory
+## This will be the root directory of the Django app in the container
+# Where your code lives
+## This explicitly tells Docker to set the provided directory as
+## the location where the application will reside within the container
+WORKDIR /usr/src/kiosk
 
-# set environment variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -24,15 +30,16 @@ RUN apk update \
 #COPY . .
 #RUN flake8 --ignore=E501,F401 .
 
-# install dependencies
-# workaround with pipenv, instead of requirements.txt
+# Install dependencies
 RUN pip install pipenv
+# Note: why not pipenv install?
+# Workaround for requirements.txt
 COPY Pipfile /tmp
 COPY Pipfile.lock /tmp
 RUN cd /tmp && pipenv requirements > requirements.txt
 
 RUN cd ../
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r /tmp/requirements.txt
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/kiosk/wheels -r /tmp/requirements.txt
 
 
 
@@ -57,16 +64,16 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apk update && apk add libpq
-COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/kiosk/wheels /wheels
 COPY --from=builder /tmp/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
 # copy entrypoint.prod.sh
-COPY ./entrypoint.prod.sh .
+COPY entrypoint.prod.sh .
 RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.prod.sh
 RUN chmod +x  $APP_HOME/entrypoint.prod.sh
 
-# copy project
+# Copy whole project to your docker home directory.
 COPY . $APP_HOME
 
 # chown all the files to the app user
@@ -77,4 +84,4 @@ USER app
 
 # run entrypoint.prod.sh
 # todo is this the right file path?
-ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
+ENTRYPOINT ["./entrypoint.prod.sh"]

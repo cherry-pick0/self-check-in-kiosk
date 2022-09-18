@@ -1,6 +1,5 @@
-# Source: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
 #!/bin/sh
-
+# Source: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
 # Verify that Postgres is healthy before applying the migrations
 # and running the Django development server
 
@@ -15,7 +14,10 @@ then
     echo "PostgreSQL started"
 fi
 
-python manage.py flush --no-input
-python manage.py migrate
+# Flush out and migrate db
+# Note: comment out, to avoid doing flush on every run
+#python manage.py flush --no-input
+#python manage.py migrate
 
 exec "$@"
+
