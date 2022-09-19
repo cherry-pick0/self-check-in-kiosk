@@ -21,11 +21,8 @@ services:
       - 8000
 #    ports:
 #      - 8000:8000
-    environment:
-      - DB_HOST=[]
-      - DB_PORT=5432
-    #env_file:
-    #  - kiosk/kiosk/settings/.env.prod
+    env_file:
+      - kiosk/kiosk/settings/.env.prod
 
   db:
     image: postgres:13-alpine
@@ -33,11 +30,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - '5432:5432'
-    environment:
-      - POSTGRES_USER=kiosk
-      - POSTGRES_PASSWORD=[secret]
-      - POSTGRES_DB=kioskdb
-      - DB_HOST=[]
     depends_on:
       - web
 

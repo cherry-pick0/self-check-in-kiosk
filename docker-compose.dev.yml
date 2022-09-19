@@ -14,10 +14,10 @@ services:
     ports:
       - 8001:8001
     environment:
+      # Override DB_HOST 'localhost' from .env file
       - DB_HOST=db
-      - DB_PORT=5432
-    #env_file:
-    #  - kiosk/kiosk/settings/.env.dev
+    env_file:
+      - kiosk/kiosk/settings/.env.dev
 
   db:
     image: postgres:13-alpine
@@ -25,11 +25,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - '5432:5432'
-    environment:
-      - POSTGRES_USER=kiosk
-      - POSTGRES_PASSWORD=kiosk
-      - POSTGRES_DB=kioskdb
-      - DB_HOST=db
     depends_on:
       - web
 
