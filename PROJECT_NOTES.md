@@ -1,5 +1,8 @@
 ## Steps of creating this project (notes)
 
+Note: these are only notes and not instructions, in order to make
+this app structure more easily understandable.
+
 **1. Activate the environment (this command creates or activates virtual environment)**
 
         pipenv shell
@@ -32,6 +35,7 @@ Notes on dev dependencies
 * [pre-commit](https://pre-commit.com/): run on commit
 * [Flake8](https://flake8.pycqa.org/en/latest/): helps prevent things like syntax errors, typos, bad formatting, incorrect styling, follows pep8 etc.
 * [isort](https://pypi.org/project/isort/): sorts imports
+* [awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html): AWS client
 
 
 **3. Create a django project**
@@ -130,12 +134,9 @@ on Ubuntu, Debian, Alpine, even Windows Server Core.
 <sub>6.3 Add Dockerfile to project</sub>
 
 
-<sub>6.4 Build docker image ??</sub>
-    
-        docker build . -t docker-django-v0.0
+<sub>6.4 Build docker containers </sub>
 
-Note - you might need to run this before:
-    
+        # Note - you might need to run this before:
         sudo chmod 777 /var/run/docker.sock
 
         # You might need to stop postgres on your machine,
@@ -149,6 +150,21 @@ Note - you might need to run this before:
         
         # Run migrations in container
         docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+        
+
+<sub>6.4.1 Build and push prod containers </sub>
+        
+        # todo: nginx container id
+        docker-compose -f docker-compose.prod.yml up --build -d
+        
+        # Push containers to server
+        docker-compose -f docker-compose.prod.yml push
+        
+
+
+<sub>6.5 Dockerization </sub>
+
+One of the sources: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
 
 
 **7. User auth**
@@ -159,6 +175,7 @@ We will have a custom User model. Create users module/django app:
         
         cd apps
         python ../manage.py startapp users
+etc.
 
 
 **8. Pycharm settings**
@@ -173,6 +190,7 @@ We will have a custom User model. Create users module/django app:
 **9. Add environment variables to your system**
         
 - on Ubuntu, go to .bashrc file and add:
+Note: is this still necessary?
          
          export DJANGO_SETTINGS_MODULE="kiosk.settings.dev"
 
@@ -193,7 +211,28 @@ We will have a custom User model. Create users module/django app:
     After setup, you can connect via ssh:
     
         ssh ubuntu@instance-ip-address -i .ssh/kiosk-api-key.pem
-    
+        
+        # Run these commands (following instructions on https://testdriven.io/blog/django-docker-https-aws/)
+        $ sudo apt update
+        $ sudo apt install apt-transport-https ca-certificates curl software-properties-common
+        $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+        $ sudo apt update
+        $ sudo apt install docker-ce
+        $ sudo usermod -aG docker ${USER}
+        $ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        $ sudo chmod +x /usr/local/bin/docker-compose
+        
+        $ docker -v
+        Docker version 20.10.8, build 3967b7d
+        
+        $ docker-compose -v
+        docker-compose version 1.29.2, build 5becea4c
+   
+   -??? Next, Create IAM role "django-ec2" (following instructions on the link: https://testdriven.io/blog/django-docker-https-aws/) and attach the new role to your EC2 instance.
+   -??? Setup AWS ECR (check  https://testdriven.io/blog/django-docker-https-aws/): fully-managed Docker image registry that makes it easy for developers to store and manage images
+   - 
+   
     **10.2 Setup RDS**
     
     Go to RDS section and find 'Create database' section.
@@ -211,7 +250,44 @@ We will have a custom User model. Create users module/django app:
         psql -h kioskdb.XYZ.us-east-1.rds.amazonaws.com -p 5432 -d kioskdb -U kiosk
 
     **10.3 Setup Deployment process**
+    
+    - Dockerization
 
     **10.4 Setup Email service**
 
     **10.5 Setup S3 bucket**
+    
+    **10.6 AWS CLI**
+    
+        - You need to have aws-cli installed
+        - Go to aws dashboard to 'Security credentials' zone.
+        - Set up keys in section "Access keys (access key ID and secret access key)"
+        - Save the credentials!
+        - Set credentials in aws (config region, aws_access_key_id, aws_secret_access_key)
+        - run aws ecr get-login --no-include-email
+        - or run aws --region us-east-1 ecr get-login-password | docker login --password-stdin --username AWS "108408647134.dkr.ecr.us-east-1.amazonaws.com"
+   
+    **10.7 Add image**
+    
+    Container images are stored in Amazon ECR repositories.
+    Create new private ECR repository "django-ec2", so you
+    can push images inside.
+    
+    https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
+    
+    **10.8 Running the Containers**
+    
+    **11. Assign an Elastic IP address to an instance**
+    
+    https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html#Add_IGW_Attach_Gateway
+    
+    Note: some steps for aws configs are probably missed.
+    
+    **???12. Deploy docker containers**
+    
+    - Amazon ECS cluster, AWS Fargate to run your container, and a load balancer.
+    - Note: delete cluster, to avoid charges!
+    
+    https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/
+    
+

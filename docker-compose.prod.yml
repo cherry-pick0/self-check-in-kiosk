@@ -1,4 +1,5 @@
-# Partly a source: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+# Source: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+# Source: https://github.com/testdrivenio/django-on-docker
 
 version: '3.7'
 
@@ -12,9 +13,11 @@ services:
       dockerfile: prod.Dockerfile
     # use Django's built-in server in development
     # command: python manage.py runserver 0.0.0.0:8000
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/django-ec2:web
     command: gunicorn kiosk.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - ./kiosk/:/usr/src/app/
+      # - ./kiosk/:/home/app/web/
+      - static_volume:/home/app/web/staticfiles
     # expose: Now, port 8000 is only exposed internally, to other Docker services.
     # The port will no longer be published to the host machine.
     expose:
@@ -30,15 +33,60 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - '5432:5432'
+    env_file:
+      - kiosk/kiosk/settings/.env.prod
     depends_on:
       - web
 
-  nginx:
-    build: ./nginx
+# More info: https://docs.nginx.com/nginx/admin-guide/web-server/app-gateway-uwsgi-django/
+#  nginx:
+#    build: ./nginx
+#    ports:
+#      - 1337:80
+#    volumes:
+#      - static_volume:/home/app/web/staticfiles
+#    depends_on:
+#      - web
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: nginx
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/django-ec2:nginx-proxy
+    restart: always
     ports:
-      - 1337:80
+      - 443:443
+      - 80:80
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      # - media_volume:/home/app/web/mediafiles
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
+
+# More info: https://testdriven.io/blog/django-lets-encrypt/
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    env_file:
+      - kiosk/kiosk/settings/.env.prod
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    environment:
+      # todo Should be automatic!
+      - NGINX_DOCKER_GEN_CONTAINER=7065dfd82991
+    depends_on:
+      - nginx-proxy
 
 volumes:
     postgres_data:
+    static_volume:
+    certs:
+    html:
+    vhost:
+    acme:

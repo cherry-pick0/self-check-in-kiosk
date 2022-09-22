@@ -1,3 +1,6 @@
+# Source: https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+# Source: https://github.com/testdrivenio/django-on-docker
+
 version: '3.7'
 
 services:
@@ -25,6 +28,8 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - '5432:5432'
+    env_file:
+      - kiosk/kiosk/settings/.env.dev
     depends_on:
       - web
 
@@ -42,7 +47,7 @@ volumes:
 #    build:
 #      context: ./kiosk
 #      dockerfile: prod.Dockerfile
-#    image: 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:web
+#    image: test-id-123.dkr.ecr.us-east-1.amazonaws.com/django-ec2:web
 #    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
 #    volumes:
 #      - static_volume:/home/app/web/staticfiles
@@ -54,7 +59,7 @@ volumes:
 #  nginx-proxy:
 #    container_name: nginx-proxy
 #    build: nginx
-#    image: 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:nginx-proxy
+#    image: test-id.dkr.ecr.us-east-1.amazonaws.com/django-ec2:nginx-proxy
 #    restart: always
 #    ports:
 #      - 443:443
