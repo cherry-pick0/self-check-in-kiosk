@@ -265,7 +265,7 @@ Note: is this still necessary?
         - Save the credentials!
         - Set credentials in aws (config region, aws_access_key_id, aws_secret_access_key)
         - run aws ecr get-login --no-include-email
-        - or run aws --region us-east-1 ecr get-login-password | docker login --password-stdin --username AWS "108408647134.dkr.ecr.us-east-1.amazonaws.com"
+        - or run aws --region us-east-1 ecr get-login-password | docker login --password-stdin --username AWS "AWS-ACCOUNT-ID.dkr.ecr.us-east-1.amazonaws.com"
    
     **10.7 Add image**
     
@@ -289,5 +289,3 @@ Note: is this still necessary?
     - Note: delete cluster, to avoid charges!
     
     https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/
-    
-
