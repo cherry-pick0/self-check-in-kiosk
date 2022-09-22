@@ -1,5 +1,5 @@
 runserver:
-	python kiosk/manage.py runserver &
+	python manage.py runserver &
 
 migrations:
-	python kiosk/manage.py makemigrations
+	python manage.py makemigrations

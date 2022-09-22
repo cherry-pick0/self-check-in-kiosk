@@ -56,10 +56,16 @@ RUN mkdir -p /home/app
 # create the app user
 RUN addgroup -S app && adduser -S app -G app
 
-# create the appropriate directories
+# Create the appropriate directories
+## Why is this necessary, to create staticfiles folder?
+## Docker Compose normally mounts named volumes as root.
+## And since we're using a non-root user, we'll get a permission
+## denied error when the collectstatic command is run if the
+## directory does not already exist.
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 # install dependencies
@@ -82,6 +88,5 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
-# run entrypoint.prod.sh
-# todo is this the right file path?
+# Run entrypoint.prod.sh
 ENTRYPOINT ["./entrypoint.prod.sh"]
