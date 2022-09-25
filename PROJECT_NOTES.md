@@ -283,9 +283,19 @@ Note: is this still necessary?
     
     Note: some steps for aws configs are probably missed.
     
-    **???12. Deploy docker containers**
+    **12. Deploy docker containers**
     
-    - Amazon ECS cluster, AWS Fargate to run your container, and a load balancer.
-    - Note: delete cluster, to avoid charges!
+    Run on your machine: 
+        
+        aws --region us-east-1 ecr get-login-password | docker login --password-stdin --username AWS "108408647134.dkr.ecr.us-east-1.amazonaws.com"
+        docker-compose -f docker-compose.prod.yml down
+        docker-compose -f docker-compose.prod.yml build
+        docker-compose -f docker-compose.prod.yml push
+        scp -i ~/.ssh/kiosk-api-key.pem -o IdentitiesOnly=yes -r $(pwd)/{kiosk,nginx,docker-compose.prod.yml} ubuntu@54.162.196.49:/home/ubuntu/test-kiosk-dir
     
-    https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/
+    Run on server:
+    
+        aws --region us-east-1 ecr get-login-password | docker login --password-stdin --username AWS "108408647134.dkr.ecr.us-east-1.amazonaws.com"
+        docker pull 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:web
+        docker pull 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:nginx-proxy 
+        docker-compose -f docker-compose.prod.yml up -d
