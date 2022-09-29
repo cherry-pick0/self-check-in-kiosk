@@ -291,6 +291,7 @@ Note: is this still necessary?
         docker-compose -f docker-compose.prod.yml down
         docker-compose -f docker-compose.prod.yml build
         docker-compose -f docker-compose.prod.yml push
+        # Note: do you really need to copy full directory?
         scp -i ~/.ssh/kiosk-api-key.pem -o IdentitiesOnly=yes -r $(pwd)/{kiosk,nginx,docker-compose.prod.yml} ubuntu@54.162.196.49:/home/ubuntu/test-kiosk-dir
     
     Run on server:
@@ -299,3 +300,6 @@ Note: is this still necessary?
         docker pull 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:web
         docker pull 108408647134.dkr.ecr.us-east-1.amazonaws.com/django-ec2:nginx-proxy 
         docker-compose -f docker-compose.prod.yml up -d
+        
+        # Go to shell
+        docker exec -it <container_id> python manage.py shell

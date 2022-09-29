@@ -2,6 +2,8 @@ from api.utils.kiosk_scenarios import KioskScenario
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
+from kiosk.celery import send_emails
+
 
 class KioskUsersTests(APITransactionTestCase):
     def setUp(self) -> None:
@@ -31,4 +33,17 @@ class KioskUsersTests(APITransactionTestCase):
         # We don't have api for emails, so check directly in db
         from data.emails.models import DataModelEmail
 
-        self.assertEqual(DataModelEmail.objects.filter(receiver_email=email).count(), 1)
+        self.assertEqual(
+            DataModelEmail.objects.filter(
+                receiver_email=email, status=DataModelEmail.CREATED
+            ).count(),
+            1,
+        )
+
+        send_emails.delay()
+        self.assertEqual(
+            DataModelEmail.objects.filter(
+                receiver_email=email, status=DataModelEmail.ERROR
+            ).count(),
+            1,
+        )

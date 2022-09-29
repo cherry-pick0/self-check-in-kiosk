@@ -29,7 +29,6 @@ RUN apk update \
 
 # Install dependencies
 RUN pip install pipenv
-# Note: why not pipenv install?
 # Workaround for requirements.txt
 COPY Pipfile /tmp
 COPY Pipfile.lock /tmp
@@ -39,13 +38,31 @@ RUN pip install -r /tmp/requirements.txt
 # Copy whole project to your docker home directory.
 COPY . $DockerHOME
 
-RUN sed -i 's/\r$//g' $DockerHOME/entrypoint.dev.sh
-RUN chmod +x $DockerHOME/entrypoint.dev.sh
+# Celery
+COPY celery_tasks/worker/start.sh /celery_worker/start_celeryworker.sh
+RUN sed -i 's/\r$//g' /celery_worker/start_celeryworker.sh
+RUN chmod +x /celery_worker/start_celeryworker.sh
+# RUN echo "PWD is: $PWD"
+CMD /celery_worker/start_celeryworker.sh
 
-# Run entrypoint.sh to verify that Postgres is healthy
-# before applying the migrations and running the
-# Django development server
-ENTRYPOINT ["./entrypoint.dev.sh"]
+COPY celery_tasks/beat/start.sh /celery_beat/start_celerybeat.sh
+RUN sed -i 's/\r$//g' /celery_beat/start_celerybeat.sh
+RUN chmod +x /celery_beat/start_celerybeat.sh
+CMD /celery_beat/start_celerybeat.sh
+
+COPY celery_tasks/flower/start.sh /celery_flower/start_flower.sh
+RUN sed -i 's/\r$//g' /celery_flower/start_flower.sh
+RUN chmod +x /celery_flower/start_flower.sh
+CMD /celery_flower/start_flower.sh
+
+## entrypoint.sh
+#RUN sed -i 's/\r$//g' $DockerHOME/entrypoint.dev.sh
+#RUN chmod +x $DockerHOME/entrypoint.dev.sh
+#
+## Run entrypoint.sh to verify that Postgres is healthy
+## before applying the migrations and running the
+## Django development server
+#ENTRYPOINT ["./entrypoint.dev.sh"]
 
 
 
@@ -93,6 +110,6 @@ ENTRYPOINT ["./entrypoint.dev.sh"]
 #RUN pipenv install
 ## port where the Django app runs
 #EXPOSE 8000
-## start server
+## start.sh.sh.sh server
 #CMD python manage.py runserver
 

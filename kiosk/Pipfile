@@ -19,6 +19,9 @@ psycopg2-binary = "*"
 ipython = "*"
 python-dotenv = "*"
 gunicorn = "*"
+celery = "*"
+redis = "*"
+flower = "*"
 
 [requires]
 python_version = "3.9"

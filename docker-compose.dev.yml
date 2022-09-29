@@ -33,6 +33,59 @@ services:
     depends_on:
       - web
 
+  redis:
+    image: "redis:alpine"
+
+  #  Celery worker process
+  celery_worker:
+    build:
+      context: kiosk
+      dockerfile: dev.Dockerfile
+    image: django_celery_example_celery_worker
+    #command: /start_celeryworker.sh
+    volumes:
+      - .:/celery_worker
+    env_file:
+      - kiosk/kiosk/settings/.env.dev
+    depends_on:
+      - web
+      - redis
+      - db
+
+  # Celery beat process for scheduled tasks
+  celery_beat:
+    build:
+      context: kiosk
+      dockerfile: dev.Dockerfile
+    image: django_celery_example_celery_beat
+    #command: /start_celerybeat.sh
+    volumes:
+      - .:/celery_beat
+    env_file:
+      - kiosk/kiosk/settings/.env.dev
+    depends_on:
+      - web
+      - redis
+      - db
+
+  # Celery dashboard
+  flower:
+    build:
+      context: kiosk
+      dockerfile: dev.Dockerfile
+    image: django_celery_example_celery_flower
+    #command: /start_flower.sh
+    volumes:
+      - .:/celery_flower
+    env_file:
+      - kiosk/kiosk/settings/.env.dev
+    ports:
+      - 5557:5555
+    depends_on:
+      - web
+      - redis
+      - db
+
 volumes:
     postgres_data:
 

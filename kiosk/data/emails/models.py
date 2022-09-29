@@ -12,19 +12,19 @@ Attributes:
     error_message: Possible errors when creating/sending
 """
 
-CREATED = "C"
-QUEUE = "Q"
-SENT = "S"
-ERROR = "E"
-EMAIL_STATUS_CHOICES = (
-    (CREATED, "Created"),
-    (QUEUE, "Queue"),
-    (SENT, "Sent"),
-    (ERROR, "Error"),
-)
-
 
 class DataModelEmail(models.Model):
+    CREATED = "C"
+    QUEUE = "Q"
+    SENT = "S"
+    ERROR = "E"
+    EMAIL_STATUS_CHOICES = (
+        (CREATED, "Created"),
+        (QUEUE, "Queue"),
+        (SENT, "Sent"),
+        (ERROR, "Error"),
+    )
+
     receiver_email = models.EmailField(max_length=256)
     receiver_name = models.CharField(max_length=64)
     subject = models.CharField(max_length=50)
