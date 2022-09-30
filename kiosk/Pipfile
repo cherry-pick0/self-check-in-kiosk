@@ -22,6 +22,7 @@ gunicorn = "*"
 celery = "*"
 redis = "*"
 flower = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.9"

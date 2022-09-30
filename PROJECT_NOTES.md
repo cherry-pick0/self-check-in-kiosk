@@ -254,6 +254,9 @@ Note: is this still necessary?
     - Dockerization
 
     **10.4 Setup Email service**
+    
+    - We're using sandbox for now. 
+    - Add verified identities (email addresses and domains)
 
     **10.5 Setup S3 bucket**
     
