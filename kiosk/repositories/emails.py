@@ -1,9 +1,14 @@
 from data.emails.models import DataModelEmail
+from domain.entities.email import Email
 from domain.entities.email import Email as EmailEntity
 from domain.services.add_email import AddEmailEmailsIRepository
+from domain.services.send_email import SendEmailEmailsIRepository
 
 
-class EmailsRepositoryORM(AddEmailEmailsIRepository):
+class EmailsRepositoryORM(AddEmailEmailsIRepository, SendEmailEmailsIRepository):
+    def update_status(self, email: Email, status):
+        DataModelEmail.objects.filter(id=email.entity_id).update(status=status)
+
     def add(self, email_entity: EmailEntity):
         email = DataModelEmail.objects.create(
             receiver_email=email_entity.email_address.email,

@@ -1,5 +1,7 @@
+from api.gateways.email_gateway import AWSEmailGateway
 from domain.services.add_email import ServiceAddEmail
 from domain.services.add_kiosk_user import ServiceAddKioskUser
+from domain.services.send_email import ServiceSendEmail
 from repositories.emails import EmailsRepositoryORM
 from repositories.kiosk_users import KioskUsersRepositoryORM
 
@@ -16,10 +18,18 @@ def add_email():
     return service
 
 
+def send_email():
+    service = ServiceSendEmail()
+    service.emails = EmailsRepositoryORM()
+    service.gateway = AWSEmailGateway()
+    return service
+
+
 class ServiceFactory:
     services = {
         ServiceAddKioskUser: add_kiosk_user,
         ServiceAddEmail: add_email,
+        ServiceSendEmail: send_email,
     }
 
     def build(self, service_class_key):
