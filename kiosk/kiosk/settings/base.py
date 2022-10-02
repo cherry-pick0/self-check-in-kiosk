@@ -170,3 +170,6 @@ APPEND_SLASH = False
 # Celery settings
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+# Globally enable/disable email sending
+SEND_EMAILS = False

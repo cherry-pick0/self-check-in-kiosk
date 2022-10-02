@@ -9,6 +9,18 @@ class Email(BaseEntity):
     _body: str
     _status: str
 
+    CREATED = "C"
+    QUEUE = "Q"
+    SENT = "S"
+    ERROR = "E"
+
+    EMAIL_STATUS_CHOICES = (
+        (CREATED, "Created"),
+        (QUEUE, "Queue"),
+        (SENT, "Sent"),
+        (ERROR, "Error"),
+    )
+
     def __init__(
         self,
         email_address,
@@ -24,6 +36,9 @@ class Email(BaseEntity):
         self.subject = subject
         self.body = body
         self.status = status
+
+    def __str__(self):
+        return self.email_address.email
 
     @property
     def email_address(self):

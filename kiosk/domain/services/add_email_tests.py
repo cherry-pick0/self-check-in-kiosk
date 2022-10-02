@@ -36,3 +36,5 @@ class ServiceAddEmailTests(TestCase):
         self.assertEqual(service.email.name, name)
         self.assertEqual(service.email.subject, subject)
         self.assertEqual(service.email.body, body)
+
+        # todo Check if "parsed"
