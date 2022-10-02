@@ -41,9 +41,10 @@ class KioskUsersTests(APITransactionTestCase):
         )
 
         send_emails.delay()
+
         self.assertEqual(
             DataModelEmail.objects.filter(
-                receiver_email=email, status=DataModelEmail.ERROR
+                receiver_email=email, status=DataModelEmail.SENT
             ).count(),
             1,
         )
