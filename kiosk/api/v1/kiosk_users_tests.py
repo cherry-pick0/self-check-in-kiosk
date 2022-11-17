@@ -30,6 +30,8 @@ class KioskUsersTests(APITransactionTestCase):
         kiosk_user_data["id"] = response.data.get("id")
         self.assertEqual(kiosk_user_data, response.data)
 
+        # TODO Emails must be sent to queue
+
         # We don't have api for emails, so check directly in db
         from data.emails.models import DataModelEmail
 
@@ -40,7 +42,8 @@ class KioskUsersTests(APITransactionTestCase):
             1,
         )
 
-        send_emails.delay()
+        # Only for testing
+        send_emails.run()
 
         self.assertEqual(
             DataModelEmail.objects.filter(

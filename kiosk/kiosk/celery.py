@@ -15,9 +15,7 @@ celery_app.autodiscover_tasks()
 @celery_app.task
 def send_emails():
     service = ServiceFactory().build(ServiceSendEmail)
-    for data_model_email in DataModelEmail.objects.filter(status=DataModelEmail.QUEUE)[
-        :20
-    ]:
+    for data_model_email in DataModelEmail.objects.all()[:20]:
         email = Email(
             email_address=EmailAddress(data_model_email.receiver_email),
             name=data_model_email.receiver_name,
@@ -26,5 +24,5 @@ def send_emails():
             status=data_model_email.status,
             entity_id_value=data_model_email.id,
         )
-        params = SendEmailParams(email)
+        params = SendEmailParams(data={"email": email})
         service.execute(params)
