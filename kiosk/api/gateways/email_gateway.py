@@ -49,7 +49,11 @@ class AWSEmailGateway(SendEmailEmailIGateway):
             )
         # Display an error if something goes wrong.
         except ClientError as e:
-            print(e.response["Error"]["Message"])
+            message = (
+                f"Error: {e.response['Error']['Message']}.\n"
+                f"Recipient, sender, subject: [{recipient, sender, subject}]"
+            )
+            raise Exception(message)
         else:
             print("Email sent! Message ID:"),
             print(response["MessageId"])

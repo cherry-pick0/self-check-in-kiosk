@@ -23,7 +23,7 @@ class SendEmailTestEmailGateway(SendEmailEmailIGateway):
 class SendEmailTestsEmailsRepository(SendEmailEmailsIRepository):
     __email = None
 
-    def update_status(self, email: Email, status):
+    def update_status(self, email: Email, status, error_message=""):
         pass
 
 

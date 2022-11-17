@@ -3,8 +3,8 @@ from django.db import models
 """
 Attributes:
     unique_identifier: Reference by which registration/guest can be distinguished
-    kiosk: Kiosk can have many Registrations
     kiosk_user: Registration on Kiosk can be linked to an existing User
+    kiosk: Kiosk can have many Registrations
 """
 
 

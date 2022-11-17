@@ -7,6 +7,9 @@ class EmailAddress:
     def __init__(self, email_value):
         self.email = email_value
 
+    def __str__(self):
+        return self.email
+
     @property
     def email(self):
         return self._email

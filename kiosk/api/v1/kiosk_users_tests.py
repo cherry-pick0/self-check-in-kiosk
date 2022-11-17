@@ -1,4 +1,5 @@
 from api.utils.kiosk_scenarios import KioskScenario
+from django.test import override_settings
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 
@@ -10,6 +11,7 @@ class KioskUsersTests(APITransactionTestCase):
         self.scenario = KioskScenario(self)
         self.scenario = self.scenario.add_admin()
 
+    @override_settings(SEND_EMAILS=True)
     def test_add_kiosk_user(self):
         # Admin logs in
         self.scenario.login(self.scenario.admin_token)
@@ -37,7 +39,7 @@ class KioskUsersTests(APITransactionTestCase):
 
         self.assertEqual(
             DataModelEmail.objects.filter(
-                receiver_email=email, status=DataModelEmail.CREATED
+                receiver_email=email, status=DataModelEmail.QUEUE
             ).count(),
             1,
         )

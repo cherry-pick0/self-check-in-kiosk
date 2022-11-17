@@ -6,8 +6,10 @@ from domain.services.send_email import SendEmailEmailsIRepository
 
 
 class EmailsRepositoryORM(AddEmailEmailsIRepository, SendEmailEmailsIRepository):
-    def update_status(self, email: Email, status):
-        DataModelEmail.objects.filter(id=email.entity_id).update(status=status)
+    def update_status(self, email: Email, status, error_message=""):
+        DataModelEmail.objects.filter(id=email.entity_id).update(
+            status=status, error_message=error_message
+        )
 
     def add(self, email_entity: EmailEntity):
         email = DataModelEmail.objects.create(
