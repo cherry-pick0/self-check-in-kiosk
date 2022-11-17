@@ -17,7 +17,7 @@ class KioskUsersTests(APITransactionTestCase):
         self.scenario.login(self.scenario.admin_token)
 
         # Admin creates a kiosk user
-        email = "user@kiosk.com"
+        email = "checkinkioskapp@gmail.com"
         kiosk_user_data = {
             "email": email,
             "first_name": "",
@@ -31,8 +31,6 @@ class KioskUsersTests(APITransactionTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         kiosk_user_data["id"] = response.data.get("id")
         self.assertEqual(kiosk_user_data, response.data)
-
-        # TODO Emails must be sent to queue
 
         # We don't have api for emails, so check directly in db
         from data.emails.models import DataModelEmail

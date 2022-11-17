@@ -45,12 +45,13 @@ class ServiceSendEmail:
         try:
             self.gateway.send(
                 recipient=str(email_entity.email_address),
-                sender="test@kiosk.com",
+                sender="checkinkioskapp@gmail.com",
                 subject=email_entity.subject,
                 body_text="",  # todo body_text
                 body_html=email_entity.body,
             )
         except Exception as e:
+            print(e)
             self.emails.update_status(email_entity, Email.ERROR, error_message=str(e))
         else:
             self.emails.update_status(email_entity, Email.SENT)
