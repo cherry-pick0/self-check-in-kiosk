@@ -1,4 +1,5 @@
 from api.gateways.email_gateway import AWSEmailGateway
+from domain.domain_events.factory import DomainEventsRunner
 from domain.services.add_email import ServiceAddEmail
 from domain.services.add_kiosk_user import ServiceAddKioskUser
 from domain.services.send_email import ServiceSendEmail
@@ -9,6 +10,7 @@ from repositories.kiosk_users import KioskUsersRepositoryORM
 def add_kiosk_user():
     service = ServiceAddKioskUser()
     service.kiosk_users = KioskUsersRepositoryORM()
+    service.domain_event_runner = DomainEventsRunner()
     return service
 
 
@@ -35,10 +37,4 @@ class ServiceFactory:
     def build(self, service_class_key):
         service_class = self.services.get(service_class_key)
         service = service_class()
-
-        # todo find better solution
-        from domain.domain_events.factory import DomainEventsFactory
-
-        service.domain_events_factory = DomainEventsFactory()
-
         return service

@@ -1,12 +1,20 @@
+import abc
+
 from domain.domain_events.events import KioskUserAdded
 from domain.domain_events.handlers import KioskUserAddedHandler
 
 
-class DomainEventsFactory:
+class IDomainEventsRunner(abc.ABC):
+    @abc.abstractmethod
+    def trigger(self, *__):
+        pass
+
+
+class DomainEventsRunner(IDomainEventsRunner):
     def __init__(self):
         self.domain_events = {KioskUserAdded: [KioskUserAddedHandler]}
 
-    def raise_domain_events(self, domain_event_class, **kwargs):
+    def trigger(self, domain_event_class, **kwargs):
         handlers = self.domain_events.get(domain_event_class)
         domain_event = domain_event_class(**kwargs)
 

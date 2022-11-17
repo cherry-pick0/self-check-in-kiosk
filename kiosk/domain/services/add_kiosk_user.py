@@ -37,7 +37,7 @@ class AddKioskUserParams:
 class ServiceAddKioskUser:
     __kiosk_user = None
     kiosk_users: AddKioskUserUsersIRepository = None
-    domain_events_factory = None
+    domain_event_runner = None
 
     def execute(self, params: AddKioskUserParams):
         kiosk_user_entity = KioskUser(
@@ -47,12 +47,7 @@ class ServiceAddKioskUser:
         )
         self.__kiosk_user = self.kiosk_users.add(kiosk_user_entity)
 
-        # May touch application logic
-        # TODO: find better solution
-        if self.domain_events_factory:
-            self.domain_events_factory.raise_domain_events(
-                KioskUserAdded, kiosk_user=kiosk_user_entity
-            )
+        self.domain_event_runner.trigger(KioskUserAdded, kiosk_user=kiosk_user_entity)
 
     @property
     def kiosk_user(self):

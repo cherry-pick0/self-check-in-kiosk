@@ -1,4 +1,5 @@
 from data.users.models import KioskUser
+from domain.domain_events.factory import DomainEventsRunner
 from domain.services.add_kiosk_user import AddKioskUserParams, ServiceAddKioskUser
 from domain.services.factory import ServiceFactory
 from rest_framework import permissions, serializers, viewsets
@@ -41,6 +42,8 @@ class KioskUsersSerializer(serializers.Serializer):
     def create(self, validated_data):
         # Add a new user
         service = ServiceFactory().build(ServiceAddKioskUser)
+        service.domain_event_runner = DomainEventsRunner()
+
         params = AddKioskUserParams(validated_data)
         service.execute(params)
         return service.kiosk_user

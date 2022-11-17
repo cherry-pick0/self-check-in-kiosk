@@ -1,11 +1,17 @@
 from unittest import TestCase
 
+from domain.domain_events.factory import IDomainEventsRunner
 from domain.entities.kiosk_user import KioskUser
 from domain.services.add_kiosk_user import (
     AddKioskUserParams,
     AddKioskUserUsersIRepository,
     ServiceAddKioskUser,
 )
+
+
+class FakeDomainEventRunner(IDomainEventsRunner):
+    def trigger(self, *_, **__):
+        pass
 
 
 class AddKioskUserTestsUsersRepository(AddKioskUserUsersIRepository):
@@ -29,6 +35,7 @@ class ServiceAddKioskUserTests(TestCase):
         kiosk_users = AddKioskUserTestsUsersRepository()
 
         service = ServiceAddKioskUser()
+        service.domain_event_runner = FakeDomainEventRunner()
         service.kiosk_users = kiosk_users
         service.execute(params)
 
